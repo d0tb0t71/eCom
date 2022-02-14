@@ -10,6 +10,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ECom">
         <activity
+            android:name=".VEmail"
+            android:exported="false" />
+        <activity
+            android:name=".LaunchPad"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterPage"
+            android:exported="false" />
+        <activity
+            android:name=".LoginPage"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
