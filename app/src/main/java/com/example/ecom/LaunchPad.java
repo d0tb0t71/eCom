@@ -1,6 +1,7 @@
 package com.example.ecom;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -28,7 +29,6 @@ public class LaunchPad extends AppCompatActivity {
         cart = findViewById(R.id.cart);
         orders = findViewById(R.id.orders);
         profile = findViewById(R.id.profile);
-
 
 
         changeFrag(new ProductFragment());
@@ -63,17 +63,30 @@ public class LaunchPad extends AppCompatActivity {
         String frag = fragment.getClass().toString();
 
         if(frag.contains("ProductFragment")){
-
+            home.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.black), android.graphics.PorterDuff.Mode.MULTIPLY);
+            cart.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.teal_700), android.graphics.PorterDuff.Mode.MULTIPLY);
+            orders.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.teal_700), android.graphics.PorterDuff.Mode.MULTIPLY);
+            profile.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.teal_700), android.graphics.PorterDuff.Mode.MULTIPLY);
 
         }
         else if(frag.contains("CartFragment")){
-
+            cart.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.black), android.graphics.PorterDuff.Mode.MULTIPLY);
+            home.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.teal_700), android.graphics.PorterDuff.Mode.MULTIPLY);
+            orders.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.teal_700), android.graphics.PorterDuff.Mode.MULTIPLY);
+            profile.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.teal_700), android.graphics.PorterDuff.Mode.MULTIPLY);
 
         }else if(frag.contains("OrdersFragment")){
-
+            orders.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.black), android.graphics.PorterDuff.Mode.MULTIPLY);
+            home.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.teal_700), android.graphics.PorterDuff.Mode.MULTIPLY);
+            cart.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.teal_700), android.graphics.PorterDuff.Mode.MULTIPLY);
+            profile.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.teal_700), android.graphics.PorterDuff.Mode.MULTIPLY);
         }
         else if(frag.contains("ProfileFragment")){
 
+            profile.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.black), android.graphics.PorterDuff.Mode.MULTIPLY);
+            home.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.teal_700), android.graphics.PorterDuff.Mode.MULTIPLY);
+            cart.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.teal_700), android.graphics.PorterDuff.Mode.MULTIPLY);
+            orders.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.teal_700), android.graphics.PorterDuff.Mode.MULTIPLY);
 
         }
 

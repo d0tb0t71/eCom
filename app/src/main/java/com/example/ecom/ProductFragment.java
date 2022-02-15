@@ -35,7 +35,7 @@ import java.util.ArrayList;
 public class ProductFragment extends Fragment {
 
     View view;
-    RecyclerView recyclerView,productRecyclerView;
+    RecyclerView recyclerView, productRecyclerView;
 
     ImageView add_product_btn;
 
@@ -47,11 +47,44 @@ public class ProductFragment extends Fragment {
 
     FirebaseFirestore db;
 
+    int[] categoryLogo = {
+            R.drawable.clothes_hanger,
+            R.drawable.running_shoes,
+            R.drawable.electronic_device,
+            R.drawable.phone_case,
+            R.drawable.playtime,
+            R.drawable.house,
+            R.drawable.food,
+            R.drawable.book,
+            R.drawable.logo,
+            R.drawable.logo,
+            R.drawable.logo,
+            R.drawable.logo,
+
+    };
+
+    String[] categoryName = {
+
+            "Clothing",
+            "Shoes",
+            "Electronics",
+            "Accessories",
+            "Kids",
+            "Home",
+            "Food",
+            "Books",
+            "E-Shop",
+            "Health",
+            "Sports",
+            "Others"
+    };
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view =  inflater.inflate(R.layout.fragment_product, container, false);
+        view = inflater.inflate(R.layout.fragment_product, container, false);
 
         //sliderView = view.findViewById(R.id.imageSlider);
 
@@ -68,68 +101,61 @@ public class ProductFragment extends Fragment {
 
         productRecyclerView = view.findViewById(R.id.productRecyclerView);
         productRecyclerView.setHasFixedSize(true);
-        productRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
-
-        int[]  categoryLogo = {R.drawable.baby,R.drawable.eye,R.drawable.fragrance,R.drawable.hair,R.drawable.makeup,R.drawable.skincare,R.drawable.others};
-
-        String[] categoryName = {"Baby","Eye","Fragrance","Hair","Makeup","Skin Care","Others"};
+        productRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
 
         categoryModels = new ArrayList<>();
 
-        for(int i=0;i<categoryLogo.length;i++){
-            CategoryModel catModel = new CategoryModel(categoryLogo[i],categoryName[i]);
+        for (int i = 0; i < categoryLogo.length; i++) {
+            CategoryModel catModel = new CategoryModel(categoryLogo[i], categoryName[i]);
             categoryModels.add(catModel);
         }
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        categoryAdapter = new CategoryAdapter(getContext(),categoryModels);
+        categoryAdapter = new CategoryAdapter(getContext(), categoryModels);
 
         recyclerView.setAdapter(categoryAdapter);
-
 
 
         db = FirebaseFirestore.getInstance();
 
         list = new ArrayList<ProductModel>();
 
-        productAdapter =new ProductAdapter(getContext(),list);
+        productAdapter = new ProductAdapter(getContext(), list);
 
         productRecyclerView.setAdapter(productAdapter);
 
         getData();
 
 
-
-
         add_product_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(),AddProduct.class));
+                startActivity(new Intent(getContext(), AddProduct.class));
             }
         });
 
         return view;
     }
 
-    private void getData(){
+    private void getData() {
 
         db.collection("products")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                        if(error != null){
-                            Toast.makeText(getContext(), "Error "+error.getMessage(), Toast.LENGTH_SHORT).show();
+                        if (error != null) {
+                            Toast.makeText(getContext(), "Error " + error.getMessage(), Toast.LENGTH_SHORT).show();
                             return;
                         }
 
-                        for(DocumentChange dc : value.getDocumentChanges()){
+                        for (DocumentChange dc : value.getDocumentChanges()) {
 
-                            if(dc.getType() == DocumentChange.Type.ADDED){
+                            if (dc.getType() == DocumentChange.Type.ADDED) {
                                 list.add(dc.getDocument().toObject(ProductModel.class));
                             }
 

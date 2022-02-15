@@ -6,12 +6,17 @@
     <string-array name="category">
 
         <item>Select Category</item>
-        <item>Baby</item>
-        <item>Eye</item>
-        <item>Fragrance</item>
-        <item>Hair</item>
-        <item>Makeup</item>
-        <item>Skin Care</item>
+        <item>Clothing</item>
+        <item>Shoes</item>
+        <item>Electronics</item>
+        <item>Accessories</item>
+        <item>Kids</item>
+        <item>Home</item>
+        <item>Food</item>
+        <item>Books</item>
+        <item>E-Shop</item>
+        <item>Health</item>
+        <item>Sports</item>
         <item>Others</item>
 
     </string-array>
