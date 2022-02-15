@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ECom">
         <activity
+            android:name=".AddProduct"
+            android:exported="false" />
+        <activity
             android:name=".VEmail"
             android:exported="false" />
         <activity
