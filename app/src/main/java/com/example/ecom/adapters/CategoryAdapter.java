@@ -1,7 +1,9 @@
 package com.example.ecom.adapters;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ecom.CategoryView;
 import com.example.ecom.R;
 import com.example.ecom.models.CategoryModel;
 
@@ -38,10 +41,23 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CategoryAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CategoryAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
         holder.cat_image.setImageResource(categoryModel.get(position).getCategoryLogo());
         holder.cat_name.setText(categoryModel.get(position).getCategoryName());
+
+        holder.cat_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String cat = categoryModel.get(position).getCategoryName();
+
+                Intent intent = new Intent(context, CategoryView.class);
+                intent.putExtra("category",cat);
+                context.startActivity(intent);
+
+            }
+        });
 
     }
 

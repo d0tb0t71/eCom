@@ -23,8 +23,8 @@
         android:layout_height="wrap_content"
         android:text="Classic  Accessories"
         android:textSize="30dp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
+        android:textStyle=""
+        android:textColor="@color/purple_500"
         android:layout_marginBottom="90dp"
         />
 
@@ -63,10 +63,10 @@
         android:id="@+id/reg_mobile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Password"
+        android:hint="Mobile"
         android:background="@drawable/back"
         android:padding="10dp"
-        android:inputType="textPassword"
+        android:inputType="number"
         android:layout_marginBottom="10dp"
         />
 

@@ -73,6 +73,9 @@ public class RegisterPage extends AppCompatActivity {
                         db = FirebaseFirestore.getInstance();
 
 
+                       // Insert == Set , Delete , Update , Read ;
+
+
                         db.collection("users")
                                 .document(user.getUid())
                                 .set(userModel);

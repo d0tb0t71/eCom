@@ -2,6 +2,7 @@ package com.example.ecom.adapters;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ecom.ProductDetails;
 import com.example.ecom.R;
 import com.example.ecom.models.ProductModel;
 
@@ -40,6 +42,17 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
         holder.pTitle.setText(product.getpName());
         holder.pPrice.setText(product.getpPrice()+"$");
+
+        holder.pTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(context, ProductDetails.class);
+                intent.putExtra("id",product.getpID());
+                context.startActivity(intent);
+
+            }
+        });
 
     }
 
