@@ -60,14 +60,23 @@ public class AddProduct extends AppCompatActivity implements AdapterView.OnItemS
                 long time = timestamp.getTime();
                 String pID = "CC" + time;
 
-                ProductModel product = new ProductModel(pID,pName,pType,pPrice);
 
-                db.collection("products")
-                        .document(pID)
-                        .set(product);
+                if(pName.length()<1){
+                    product_name.setError("Enter Product Name");
+                }
+                else if(product_price.length()<1){
+                    product_price.setError("Enter Product Price");
+                }
+                else{
+                    ProductModel product = new ProductModel(pID,pName,pType,pPrice);
 
-                startActivity(new Intent(getApplicationContext(),LaunchPad.class));
-                finish();
+                    db.collection("products")
+                            .document(pID)
+                            .set(product);
+
+                    startActivity(new Intent(getApplicationContext(),LaunchPad.class));
+                    finish();
+                }
 
 
             }

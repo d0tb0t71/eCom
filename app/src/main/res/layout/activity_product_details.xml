@@ -78,6 +78,16 @@
         />
 
 
+    <Button
+        android:id="@+id/e_order"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Order Now"
+        android:backgroundTint="#398E05"
+        />
+
+
+
 
 
 

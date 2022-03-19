@@ -22,7 +22,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Classic  Accessories"
+        android:text="eCom"
         android:textSize="30dp"
         android:textStyle="bold"
         android:textColor="@color/black"
@@ -57,6 +57,7 @@
         android:text="Forgot Password"
         android:textAlignment="textEnd"
         android:layout_marginBottom="20dp"
+        android:visibility="gone"
         />
 
     <Button

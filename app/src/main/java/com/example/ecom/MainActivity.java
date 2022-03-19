@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,9 +38,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        if(FirebaseAuth.getInstance().getCurrentUser()!=null){
-            startActivity(new Intent(getApplicationContext(),LaunchPad.class));
-            finish();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        if(user!=null){
+            if(user.isEmailVerified()){
+                startActivity(new Intent(getApplicationContext(),LaunchPad.class));
+                finish();
+            }
+            else{
+                startActivity(new Intent(getApplicationContext(),VEmail.class));
+            }
+
+
         }
     }
 }

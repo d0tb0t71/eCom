@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ECom">
         <activity
+            android:name=".OrderDetails"
+            android:exported="false" />
+        <activity
+            android:name=".EditProduct"
+            android:exported="false" />
+        <activity
             android:name=".EditProfile"
             android:exported="false" />
         <activity

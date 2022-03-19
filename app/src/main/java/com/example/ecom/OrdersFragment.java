@@ -2,63 +2,129 @@ package com.example.ecom;
 
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link OrdersFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.example.ecom.adapters.OrderAdapter;
+import com.example.ecom.adapters.ProductAdapter;
+import com.example.ecom.models.OrderModel;
+import com.example.ecom.models.ProductModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+
+
 public class OrdersFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    View view;
+    RecyclerView orderList;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    OrderAdapter orderAdapter;
+    ArrayList<OrderModel> list;
 
-    public OrdersFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment OrdersFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static OrdersFragment newInstance(String param1, String param2) {
-        OrdersFragment fragment = new OrdersFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    FirebaseFirestore db;
+    String myStatus ="";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_orders, container, false);
+        view =  inflater.inflate(R.layout.fragment_orders, container, false);
+
+
+        orderList = view.findViewById(R.id.orderList);
+
+        db = FirebaseFirestore.getInstance();
+
+        list = new ArrayList<OrderModel>();
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setReverseLayout(true);
+        layoutManager.setStackFromEnd(true);
+        orderList.setLayoutManager(layoutManager);
+
+        list = new ArrayList<>();
+
+        orderAdapter = new OrderAdapter(getContext(), list);
+        orderList.setAdapter(orderAdapter);
+
+        DocumentReference documentReference1 = db.collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        documentReference1.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+
+                String st = value.getString("userStatus");
+
+                if (st.equals("Admin")) {
+                    myStatus = "Admin";
+                } else if (st.equals("Customer")) {
+                    myStatus = "Customer";
+                }
+
+
+
+            }
+        })
+        ;
+
+
+        db.collection("orders")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
+                        if (error != null) {
+                            Toast.makeText(getContext(), "Error " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        for (DocumentChange dc : value.getDocumentChanges()) {
+
+                            if (dc.getType() == DocumentChange.Type.ADDED) {
+
+                                OrderModel orderModel = dc.getDocument().toObject(OrderModel.class);
+
+
+
+                                if(myStatus.equals("Admin")){
+                                    list.add(dc.getDocument().toObject(OrderModel.class));
+
+
+                                }
+                                else{
+                                    OrderModel order = dc.getDocument().toObject(OrderModel.class);
+
+                                    if(order.getBuyerUID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                                        list.add(dc.getDocument().toObject(OrderModel.class));
+                                    }
+                                }
+
+                            }
+
+                            orderAdapter.notifyDataSetChanged();
+
+                        }
+
+                    }
+                });
+
+        return view;
     }
 }

@@ -22,7 +22,10 @@ import com.example.ecom.adapters.SliderAdapter;
 import com.example.ecom.models.CategoryModel;
 import com.example.ecom.models.ProductModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -129,6 +132,29 @@ public class ProductFragment extends Fragment {
         productRecyclerView.setAdapter(productAdapter);
 
         getData();
+
+
+
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+
+        DocumentReference documentReference1 = db.collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        documentReference1.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+
+                String st = "";
+                st += value.getString("userStatus");
+
+
+                if(st.equals("Customer")){
+                    add_product_btn.setVisibility(View.GONE);
+                }
+
+            }
+        })
+        ;
 
 
         add_product_btn.setOnClickListener(new View.OnClickListener() {

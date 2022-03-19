@@ -30,6 +30,8 @@ public class LaunchPad extends AppCompatActivity {
         orders = findViewById(R.id.orders);
         profile = findViewById(R.id.profile);
 
+        cart.setVisibility(View.GONE);
+
 
         changeFrag(new ProductFragment());
 

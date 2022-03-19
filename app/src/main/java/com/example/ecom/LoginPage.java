@@ -42,29 +42,37 @@ public class LoginPage extends AppCompatActivity {
             String pass = login_pass.getText().toString();
 
 
-            mAuth.signInWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
+           if(email.length()<5){
+               login_email.setError("Enter Valid Email");
+           }
+            else if(pass.length()<6){
+                login_pass.setError("Minimum length is 6");
+            }
+           else{
+               mAuth.signInWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                   @Override
+                   public void onComplete(@NonNull Task<AuthResult> task) {
 
-                    user = mAuth.getCurrentUser();
-                    if(task.isSuccessful() ){
-                        if(user.isEmailVerified()){
-                            startActivity(new Intent(getApplicationContext(),LaunchPad.class));
-                        }
-                        else
-                        {
-                            startActivity(new Intent(getApplicationContext(),VEmail.class));
-                        }
+                       user = mAuth.getCurrentUser();
+                       if(task.isSuccessful() ){
+                           if(user.isEmailVerified()){
+                               startActivity(new Intent(getApplicationContext(),LaunchPad.class));
+                           }
+                           else
+                           {
+                               startActivity(new Intent(getApplicationContext(),VEmail.class));
+                           }
 
-                    }
+                       }
 
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getApplicationContext(), "Login Failed \n"+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
+                   }
+               }).addOnFailureListener(new OnFailureListener() {
+                   @Override
+                   public void onFailure(@NonNull Exception e) {
+                       Toast.makeText(getApplicationContext(), "Login Failed \n"+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                   }
+               });
+           }
 
 
 
@@ -74,6 +82,7 @@ public class LoginPage extends AppCompatActivity {
         reg_now_btn.setOnClickListener(v->{
 
             startActivity(new Intent(getApplicationContext(),RegisterPage.class));
+            finish();
         });
 
 
