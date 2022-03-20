@@ -55,7 +55,7 @@ public class EditProfile extends AppCompatActivity {
                 String Addr = addr.getText().toString();
 
 
-                if (Pattern.matches("[a-zA-Z]+", Name)) {
+                if (!Name.matches(".*\\d.*")) {
                     if(Name.length()<3){
                         name.setError("Name should be more than 3 character");
                     }

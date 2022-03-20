@@ -10,10 +10,15 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ecom.adapters.CategoryAdapter;
@@ -39,6 +44,9 @@ public class ProductFragment extends Fragment {
 
     View view;
     RecyclerView recyclerView, productRecyclerView;
+    EditText search_et;
+    TextView welcome;
+    LinearLayout b1,b2;
 
     ImageView add_product_btn;
 
@@ -101,6 +109,10 @@ public class ProductFragment extends Fragment {
 //        sliderView.startAutoCycle();
 
         recyclerView = view.findViewById(R.id.categoryRecyclerView);
+        search_et = view.findViewById(R.id.search_et);
+        welcome = view.findViewById(R.id.welcome);
+        b1 = view.findViewById(R.id.b1);
+        b2 = view.findViewById(R.id.b2);
 
         productRecyclerView = view.findViewById(R.id.productRecyclerView);
         productRecyclerView.setHasFixedSize(true);
@@ -134,6 +146,35 @@ public class ProductFragment extends Fragment {
         getData();
 
 
+        search_et.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                filter(s.toString());
+                if(s.length()>0){
+                    recyclerView.setVisibility(View.GONE);
+                    welcome.setVisibility(View.GONE);
+                    b1.setVisibility(View.GONE);
+                    b2.setVisibility(View.GONE);
+                }
+                else{
+                    recyclerView.setVisibility(View.VISIBLE);
+                    welcome.setVisibility(View.VISIBLE);
+                    b1.setVisibility(View.VISIBLE);
+                    b2.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
 
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -165,6 +206,22 @@ public class ProductFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void filter(String text) {
+
+        ArrayList<ProductModel> filterList = new ArrayList<>();
+
+        for(ProductModel productModel : list){
+
+            if (productModel.getpName().toLowerCase().contains(text.toLowerCase())){
+                filterList.add(productModel);
+            }
+
+        }
+
+        productAdapter.filteredList(filterList);
+
     }
 
     private void getData() {

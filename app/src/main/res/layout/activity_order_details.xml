@@ -91,6 +91,24 @@
         android:layout_marginBottom="10dp"
 
         />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Buyer Address :"
+        android:textColor="@color/black"
+
+        android:textAlignment="center"
+        />
+    <TextView
+        android:id="@+id/buyer_add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Loading"
+        android:textAlignment="center"
+        android:textSize="17dp"
+        android:layout_marginBottom="10dp"
+
+        />
 
     <TextView
         android:layout_width="match_parent"

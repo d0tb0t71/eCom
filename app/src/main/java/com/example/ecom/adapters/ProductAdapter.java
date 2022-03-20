@@ -8,14 +8,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ecom.ProductDetails;
 import com.example.ecom.R;
+import com.example.ecom.models.OrderModel;
 import com.example.ecom.models.ProductModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
@@ -68,6 +73,32 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             }
         });
 
+        holder.order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+                long time = timestamp.getTime();
+                String oID = "Order No :" + time;
+
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                OrderModel order = new OrderModel(oID, product.getpName(), product.getpType(), product.getpPrice(), FirebaseAuth.getInstance().getUid());
+
+                db.collection("orders")
+                        .document(oID)
+                        .set(order);
+
+
+                Toast.makeText(context, "Product Ordered", Toast.LENGTH_SHORT).show();
+
+                holder.order.setEnabled(false);
+
+
+            }
+        });
+
     }
 
     @Override
@@ -75,9 +106,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         return list.size();
     }
 
+    public void filteredList(ArrayList<ProductModel> filterList) {
+
+        list = filterList;
+        notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView pTitle,pPrice;
+        TextView pTitle,pPrice,order;
         ImageView logo_img;
 
         public ViewHolder(@NonNull View itemView) {
@@ -85,6 +122,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
             pTitle = itemView.findViewById(R.id.pTitle);
             pPrice = itemView.findViewById(R.id.pPrice);
+            order = itemView.findViewById(R.id.order);
             logo_img = itemView.findViewById(R.id.logo_img);
 
 

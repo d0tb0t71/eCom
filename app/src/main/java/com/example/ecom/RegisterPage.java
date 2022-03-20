@@ -65,7 +65,7 @@ public class RegisterPage extends AppCompatActivity {
             String userStatus = radioButton.getText().toString();
 
 
-            if (Pattern.matches("[a-zA-Z]+", name)) {
+            if (!name.matches(".*\\d.*")) {
                 if(email.length()<5){
                     reg_email.setError("Enter Valid Email");
                 }

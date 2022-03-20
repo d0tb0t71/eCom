@@ -85,7 +85,7 @@
                 android:id="@+id/update_profile"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:text="Update Product"
+                android:text="Update Profile"
                 />
 
 

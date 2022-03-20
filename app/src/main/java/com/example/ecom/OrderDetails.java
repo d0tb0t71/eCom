@@ -14,7 +14,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 
 public class OrderDetails extends AppCompatActivity {
 
-    TextView order_id,pro_name,order_price,order_status,buyer_name;
+    TextView order_id,pro_name,order_price,order_status,buyer_name,buyer_add;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +27,7 @@ public class OrderDetails extends AppCompatActivity {
         order_price = findViewById(R.id.order_price);
         order_status = findViewById(R.id.order_status);
         buyer_name = findViewById(R.id.buyer_name);
+        buyer_add = findViewById(R.id.buyer_add);
 
 
 
@@ -45,7 +46,7 @@ public class OrderDetails extends AppCompatActivity {
 
                 order_id.setText(""+value.getString("oID"));
                 pro_name.setText(""+value.getString("pName"));
-                order_price.setText(""+value.getString("pPrice"+"৳"));
+                order_price.setText(""+value.getString("pPrice")+"৳");
                 String uid = ""+value.getString("buyerUID");
 
 
@@ -55,6 +56,7 @@ public class OrderDetails extends AppCompatActivity {
                     public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
 
                         buyer_name.setText(""+value.getString("name"));
+                        buyer_add.setText(""+value.getString("address"));
 
                     }
                 });
